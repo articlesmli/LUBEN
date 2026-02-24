@@ -1,16 +1,15 @@
-"""
-WSGI config for nmr_site project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/6.0/howto/deployment/wsgi/
-"""
-
 import os
+import sys
 
+# 1. Add your project directory to the sys.path
+path = '/home/LUBEN/LUBEN'
+if path not in sys.path:
+    sys.path.append(path)
+
+# 2. Tell Django where the settings are
+# (Ensure 'nmr_site' is the folder name containing settings.py)
+os.environ['DJANGO_SETTINGS_MODULE'] = 'nmr_site.settings'
+
+# 3. Start the application
 from django.core.wsgi import get_wsgi_application
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'nmr_site.settings')
-
 application = get_wsgi_application()
