@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LUBEN</title>
+    <style>
+        body { font-family: sans-serif; background: white; padding: 40px; color: #333; }
+        h1 { color: #2c3e50; margin-bottom: 5px; }
+        h3, h5, h6 { color: #34495e; margin-top: 5px; }
+        form { margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; vertical-align: top; }
+        th { background-color: #f8f9fa; color: #555; }
+        .positive { color: #27ae60; font-weight: bold; }
+        .negative { color: #c0392b; }
+        .btn-analyze { padding: 10px 20px; cursor: pointer; margin-top: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; }
+        .btn-pdf { background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; }
+        .model-card { background: #fdfdfd; border: 1px solid #eee; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Lucid and Universal Bioapplicability Evaluation of Nanoformulations (LUBEN)</h1>
+    <hr>
+
+    <div class="model-card">
+        <h5>Predicting the result of nanoparticle influence on the samll biomolecule D1 receptor antagonism and CHOP protein inhibition</h6>
+        <ul>
+        {% for model in models %}
+            <li>
+                <strong>ML</strong> {{ model.target_functionality }} 
+                <span style="color:  #3399bb; margin-left: 10px;">
+                    ({{ model.training_accuracy|floatformat:2 }} Accuracy , {{ model.training_f1_score|floatformat:2 }} F1-score)
+                </span>
+            </li>
+        {% empty %}
+            <li style="color: #3399bb;">No models found in database. Run the scan command!</li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <h5>Instructions: You need to porvide the 13C NMR spectra of your nanoformulation as a string of 300 consecutive subranges (0 for no peaks, total count for presence).</h5>
+
+    <form method="POST">
+        {% csrf_token %}
+        <label><strong>Compound Name:</strong></label><br>
+        <input type="text" name="compound_name" value="{{ compound_name }}" placeholder="e.g., Ethanol" style="width: 100%; padding: 10px; margin-bottom: 15px;" required>
+        
+        <label><strong>NMR Peak String (300 digits):</strong></label><br>
+        <textarea name="peak_string" placeholder="Paste your 300-character numeric string here..." rows="5" style="width: 100%; padding: 10px; font-family: monospace;" required></textarea>
+        
+       <button type="submit" class="btn-analyze" style="background-color: #3399bb;">Analyse Compound</button>
+    </form>
+
+    {% if results %}
+    <hr>
+    <h2>Results for: {{ compound_name }}</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Functionality & Definition</th>
+                <th>Prediction</th>
+                <th>Model Accuracy</th>
+                <th>F1 Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for res in results %}
+            <tr>
+                <td>
+                    <strong>{{ res.definition }}</strong>
+                    <div style="font-size: 0.85em; color: #666; font-style: italic;">
+                        {{ res.functionality }}
+                    </div>
+                </td>
+                
+                <td class="{% if res.prediction == 'Positive' %}positive{% else %}negative{% endif %}">
+                    {{ res.prediction }}
+                </td>
+                
+                <td>{{ res.accuracy }}</td>
+                <td>{{ res.f1 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="margin-top: 25px;">
+        <a href="{% url 'export_pdf' test_id %}" class="btn-pdf">
+            📄 Download PDF Report for {{ compound_name }}
+        </a>
+    </div>
+    {% endif %}
+
+    <div style="text-align: right; margin-top: 40px;">
+        <a href="{% url 'history_list' %}" style="color: #007bff; text-decoration: none; font-weight: bold;">
+            View History &rarr;
+        </a>
+    </div>
+
+</body>
+</html>

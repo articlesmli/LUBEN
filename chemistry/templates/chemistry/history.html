@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analysis History</title>
+    <style>
+        body { font-family: sans-serif; background: white; padding: 40px; color: #333; }
+        h1 { color: #2c3e50; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f8f9fa; }
+        .btn { padding: 5px 10px; text-decoration: none; border-radius: 4px; font-size: 14px; }
+        .btn-view { background-color: #007bff; color: white; }
+        .btn-pdf { background-color: #28a745; color: white; }
+        .nav { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="{% url 'predict' %}">← Back to Predictor</a>
+    </div>
+    
+    <h1>Research History</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Compound Name</th>
+                <th>Results Found</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for test in tests %}
+            <tr>
+                <td>{{ test.created_at|date:"Y-m-d H:i" }}</td>
+                <td>{{ test.compound_name }}</td>
+                <td>{{ test.results.count }} models applied</td>
+                <td>
+                    <a href="{% url 'export_pdf' test.id %}" class="btn btn-pdf">Download PDF</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No analyses performed yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
