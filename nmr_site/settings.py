@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-0qt!9o#3ayld@4v9d&9i^0dm1&cjuc_5&s9#@p(d3y=fm636h@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['LUBEN.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -121,3 +121,5 @@ import os
 
 # The link to your ML models folder
 ONEDRIVE_MODELS_DIR = r"C:\Users\ivano\OneDrive\Self-appeared\Documents"
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
