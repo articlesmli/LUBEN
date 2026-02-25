@@ -117,7 +117,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-import os
+STATICFILES_DIRS = [
+    BASE_DIR / "static", # If you have a global static folder
+]
+# import os
 
 # The link to your ML models folder
 ONEDRIVE_MODELS_DIR = r"C:\Users\ivano\OneDrive\Self-appeared\Documents"

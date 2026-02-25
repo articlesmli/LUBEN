@@ -141,3 +141,4 @@ def model_list_view(request):
     # Fetch EVERY model found by your scan command
     all_models = MLModelMetadata.objects.all() 
     return render(request, 'your_template.html', {'models': all_models})
+

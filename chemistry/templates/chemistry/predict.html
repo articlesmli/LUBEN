@@ -1,58 +1,189 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>LUBEN</title>
-    <style>
-        body { font-family: sans-serif; background: white; padding: 40px; color: #333; }
-        h1 { color: #2c3e50; margin-bottom: 5px; }
-        h3, h5, h6 { color: #34495e; margin-top: 5px; }
-        form { margin-bottom: 30px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; vertical-align: top; }
-        th { background-color: #f8f9fa; color: #555; }
-        .positive { color: #27ae60; font-weight: bold; }
-        .negative { color: #c0392b; }
-        .btn-analyze { padding: 10px 20px; cursor: pointer; margin-top: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; }
-        .btn-pdf { background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; }
-        .model-card { background: #fdfdfd; border: 1px solid #eee; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
-    </style>
-</head>
-<body>
-    <h1>Lucid and Universal Bioapplicability Evaluation of Nanoformulations (LUBEN)</h1>
-    <hr>
 
-    <div class="model-card">
-        <h5>Predicting the result of nanoparticle influence on the samll biomolecule D1 receptor antagonism and CHOP protein inhibition</h6>
-        <ul>
-        {% for model in models %}
-            <li>
-                <strong>ML</strong> {{ model.target_functionality }} 
-                <span style="color:  #3399bb; margin-left: 10px;">
-                    ({{ model.training_accuracy|floatformat:2 }} Accuracy , {{ model.training_f1_score|floatformat:2 }} F1-score)
+<html>
+
+<head>
+
+    <title>LUBEN</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    
+
+    <style>
+
+        /* YOUR EXISTING STYLES */
+
+        body { font-family: sans-serif; background: white; padding: 40px; color: #333; position: relative; }
+
+        h1 { color: #2c3e50; margin-bottom: 5px; width: 80%; } /* Adjusted width so it doesn't hit the icons */
+
+        h3, h5, h6 { color: #34495e; margin-top: 5px; }
+
+        form { margin-bottom: 30px; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; vertical-align: top; }
+
+        th { background-color: #f8f9fa; color: #555; }
+
+        .positive { color: #27ae60; font-weight: bold; }
+
+        .negative { color: #c0392b; }
+
+        .btn-analyze { padding: 10px 20px; cursor: pointer; margin-top: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; }
+
+        .btn-pdf { background-color: #11822b; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; }
+
+        .model-card { background: #fdfdfd; border: 1px solid #eee; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+
+
+
+        /* 2. ADDED TOP RIGHT CONTACT STYLES */
+
+        .top-right-contact {
+
+            position: absolute;
+
+            top: 20px;
+
+            right: 40px;
+
+            display: flex;
+
+            gap: 20px;
+
+            align-items: center;
+
+            background: #f8f9fa;
+
+            padding: 10px 20px;
+
+            border-radius: 50px;
+
+            border: 1px solid #ddd;
+
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+
+        }
+
+        .top-right-contact a {
+
+            color: #11637e; /* Matches your Analyze button color */
+
+            text-decoration: none;
+
+            font-size: 1.4rem;
+
+            transition: transform 0.2s ease;
+
+        }
+
+        .top-right-contact a:hover {
+
+            transform: scale(1.2);
+
+            color: #2c3e50;
+
+        }
+
+        .hf-emoji { font-size: 1.2rem !important; text-decoration: none; }
+
+    </style>
+
+</head>
+
+<body>
+
+    <nav class="top-right-contact">
+
+        <a href="mailto:ivanovaml@hotmail.co.uk" title="Email"><i class="fas fa-envelope"></i></a>
+
+        <a href="https://www.linkedin.com/in/mariya-l-ivanova-5049a91b8/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+
+        <a href="https://github.com/articlesmli" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+
+        <a href="https://huggingface.co/ivanovaml" target="_blank" title="Hugging Face" class="hf-emoji">🤗</a>
+
+        <a href="https://orcid.org/0009-0005-7730-2423" target="_blank" title="ORCID"><i class="fab fa-orcid"></i></a>
+
+    </nav>
+
+
+
+    <h1 style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 2.2rem; color: #11637e; margin-bottom: 20px; line-height: 1.2;">
+
+        Lucid and Universal Bioapplicability Evaluation of Nanoformulations (LUBEN)
+
+    </h1>
+            
+    {% load static %}
+
+    <div style="display: flex; align-items: stretch; min-height: 450px; flex-wrap: wrap; background-color: #ffffff; border-bottom: 2px solid #f0f0f0;">
+        
+        <div style="flex: 1; min-width: 400px; display: flex; align-items: center; justify-content: center; padding: 20px; background-color: #ffffff;">
+            <img src="{% static 'images/web.png' %}" alt="LUBEN Workflow" 
+                style="max-width: 100%; 
+                        height: auto; 
+                        border-radius: 8px; 
+                        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); 
+                        margin-top: -15px; 
+                        position: relative; 
+                        display: block;">
+        </div>
+
+        <div style="flex: 1; min-width: 400px; padding: 40px; display: flex; flex-direction: column; justify-content: center;">
+            <p style="font-size: 1.15rem; color: #444; margin-bottom: 25px; line-height: 1.8; text-align: justify; hyphens: auto; word-spacing: -1px;">
+                This initiative focuses on the development of a computational framework designed to quantify the functional changes in small biomolecules when they are conjugated with nanoparticles. Tracking this impact in different environments and time frames would provide information for nanoparticle portfolio generation and support nanomedicine research, respectively. The approach has the potential to be developed for large biomolecules.
+                <!-- <br><br>  -->
+                <span style="display: block; text-align: left; color: #d9534f; font-weight: bold; margin-top: 15px;">
+                    <i class="fas fa-exclamation-triangle"></i> Attention: The project is Under Development.
                 </span>
-            </li>
-        {% empty %}
-            <li style="color: #3399bb;">No models found in database. Run the scan command!</li>
-        {% endfor %}
-        </ul>
+            </p>
+
+            <a href="https://www.youtube.com/watch?v=5PDiZ62oBUQ" target="_blank" style="display: inline-flex; align-items: center; width: fit-content; background-color: #FF0000; color: white; padding: 12px 24px; text-decoration: none; border-radius: 50px; font-weight: bold; transition: background 0.3s;">
+                <svg style="width: 24px; height: 24px; margin-right: 10px; fill: white;" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                Watch Project Presentation
+            </a>
+        </div>
+    </div>
+    <div style="padding: 20px 0;">
+        <h4 style="color: #333;"><strong>Instructions</strong>: Fill in below the identification of the nanoformulation, including Nanoformulation MInChI String and Key Physical Specs separated by the sign & and its 13C NMR spectra as a string of 300 digits, corresponding to 0 for no peak and an integer for the total number of peaks in the corresponding interval.</h4>
+        
+        <h4 style="margin-bottom: 45px; color: #d30000;">
+            <i class="fas fa-exclamation-triangle"></i> Attention: The framework aims to integrate thousands of case studiess; however, at this stage only two are included, focusing on D1 dopamine receptor antagonism and CHOP inhibition.
+        </h4>
+
+        <form method="POST">
+            {% csrf_token %}
+
+           <style>
+                .form-group { 
+                    margin-bottom: 45px; /* Increased from 30px to 45px for better breathing room */
+                }
+            </style>
+
+            <div class="form-group">
+                <label><strong>Nanoformulation MInChI String & Key Physical Specs </strong></label><br>
+                <input type="text" name="compound_name" value="{{ compound_name }}" 
+                    placeholder="Write MInChI String & Key Physical Specs here..." 
+                    style="width: 100%; padding: 12px; margin-top: 10px; border: 1px solid #ccc; border-radius: 4px;" required>
+            </div>
+
+            <div class="form-group">
+                <label><strong>13C NMR Peak String (300-Digit Feature Set):</strong></label><br>
+                <textarea name="peak_string" placeholder="Paste numeric string here..." rows="5" 
+                        style="width: 100%; padding: 12px; margin-top: 10px; font-family: 'Courier New', monospace; border: 1px solid #ccc; border-radius: 4px;" required></textarea>
+            </div>
+            
+            <button type="submit" class="btn-analyze">Analyse & Store Prediction</button>
+        </form>
     </div>
 
-    <h5>Instructions: You need to porvide the 13C NMR spectra of your nanoformulation as a string of 300 consecutive subranges (0 for no peaks, total count for presence).</h5>
-
-    <form method="POST">
-        {% csrf_token %}
-        <label><strong>Compound Name:</strong></label><br>
-        <input type="text" name="compound_name" value="{{ compound_name }}" placeholder="e.g., Ethanol" style="width: 100%; padding: 10px; margin-bottom: 15px;" required>
-        
-        <label><strong>NMR Peak String (300 digits):</strong></label><br>
-        <textarea name="peak_string" placeholder="Paste your 300-character numeric string here..." rows="5" style="width: 100%; padding: 10px; font-family: monospace;" required></textarea>
-        
-       <button type="submit" class="btn-analyze" style="background-color: #3399bb;">Analyse Compound</button>
-    </form>
-
     {% if results %}
-    <hr>
-    <h2>Results for: {{ compound_name }}</h2>
+        <hr style="border: none; height: 1px; background-color: #ddd; margin-bottom: 40px;">
+        <h2>Results for: {{ compound_name }}</h2>
 
     <table>
         <thead>
@@ -94,6 +225,8 @@
     <div style="text-align: right; margin-top: 40px;">
         <a href="{% url 'history_list' %}" style="color: #007bff; text-decoration: none; font-weight: bold;">
             View History &rarr;
+            <th>Synthesis Method</th>
+            <td>{{ res.synthesis_method }}</td>
         </a>
     </div>
 
