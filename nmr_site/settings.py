@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-0qt!9o#3ayld@4v9d&9i^0dm1&cjuc_5&s9#@p(d3y=fm636h@
 DEBUG = True
 
 ALLOWED_HOSTS = ['LUBEN.pythonanywhere.com', 'localhost', '127.0.0.1']
+# pythonanywhere.com
 
 
 # Application definition
@@ -115,7 +116,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = '/home/LUBEN/LUBEN/static'
 
 STATICFILES_DIRS = [
     BASE_DIR / "static", # If you have a global static folder
